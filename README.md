@@ -2,13 +2,11 @@
 
 ## INSTALLATION
 
-To install project dependencies, run:
+To install Node.js and project dependencies, run:
 
 ```bash
 npm install
 ```
-
-This will install Node.js and dependencies.
 
 ## RUN API TESTS
 
