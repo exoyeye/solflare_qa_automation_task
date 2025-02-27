@@ -8,7 +8,7 @@ To install project dependencies, run:
 npm install
 ```
 
-This will install Node.js dependencies.
+This will install Node.js and dependencies.
 
 ## RUN API TESTS
 
