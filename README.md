@@ -2,11 +2,26 @@
 
 ## INSTALLATION
 
-To install Node.js and project dependencies, run:
+### Setup (with or without Node.js):
 
+For Windows:
 ```bash
-npm install
+# Run the setup script
+setup.bat
 ```
+
+For macOS/Linux:
+```bash
+# Make the script executable (first time only)
+chmod +x setup.sh
+# Run the setup script
+./setup.sh
+```
+
+These scripts will:
+1. Check if Node.js is installed and install it if needed
+2. Install all project dependencies
+3. Configure WebdriverIO
 
 ## RUN API TESTS
 
