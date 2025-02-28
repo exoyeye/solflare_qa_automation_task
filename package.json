@@ -4,10 +4,10 @@
     "description": "solflare qa task",
     "main": "index.js",
     "scripts": {
+        "setup:windows": "powershell -ExecutionPolicy Bypass -File ./install-node.ps1 && npm install",
+        "setup:unix": "bash ./install-node.sh && npm install",
         "test_e2e": "wdio run wdio.conf.js",
-        "test_api": "mocha test/specs/api/solflare_api.spec.js",
-        "setup": "node setup.js",
-        "setup:unix": "curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash && export NVM_DIR=\"$HOME/.nvm\" && source \"$NVM_DIR/nvm.sh\" && nvm install 20.18.3 && nvm use 20.18.3 && npm install && npx wdio config"
+        "test_api": "mocha test/specs/api/solflare_api.spec.js"
     },
     "author": "Mario Bajac",
     "license": "ISC",

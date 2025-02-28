@@ -11,19 +11,18 @@ Here are the setup instructions for WIndows, macOS and Linux:
 Windows:
 ```bash
 .\install-node.ps1
-```
-After node setup is complete, run:
-```bash
 npm install
 ```
 
 
+
 For macOS/Linux:
 ```bash
-# Make the script executable (first time only)
-chmod +x setup.sh
-# Run the setup script
-./setup.sh
+chmod +x install-node.sh
+./install-node.sh
+npm install
+
+npm run setup:unix
 ```
 
 These scripts will:
