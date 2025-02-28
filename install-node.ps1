@@ -1,34 +1,49 @@
-# PowerShell script to download and install Node.js
-$nodeVersion = "20.18.3"
-$nodeUrl = "https://nodejs.org/dist/v$nodeVersion/node-v$nodeVersion-x64.msi"
-$nodeInstallerPath = "$env:TEMP\node-installer.msi"
+$nodeVersionRequired = "20.18.3"
+$nodeInstallerUrl = "https://nodejs.org/dist/v$nodeVersionRequired/node-v$nodeVersionRequired-x64.msi"
+$installerPath = "$env:TEMP\node-v$nodeVersionRequired-x64.msi"
 
-Write-Host "Downloading Node.js v$nodeVersion..."
-Invoke-WebRequest -Uri $nodeUrl -OutFile $nodeInstallerPath
-
-Write-Host "Installing Node.js..."
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/i", $nodeInstallerPath, "/quiet", "/norestart" -Wait
-
-# Refresh environment variables
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-
-Write-Host "Node.js installation completed. Verifying..."
-try {
-    $nodeVersionInstalled = & node -v
-    Write-Host "Node.js $nodeVersionInstalled installed successfully!"
-    
-    $npmVersionInstalled = & npm -v
-    Write-Host "npm $npmVersionInstalled installed successfully!"
-    
-    Write-Host "Installing project dependencies..."
-    & npm install
-    
-    Write-Host "Configuring WebdriverIO..."
-    & npx wdio config
-} catch {
-    Write-Host "Node.js installation verification failed. You may need to restart your computer."
-    Write-Host "After restarting, run 'npm install' to install dependencies."
+# Function to get installed Node.js version
+function Get-NodeVersion {
+    try {
+        $nodeVersion = node -v 2>$null
+        if ($nodeVersion) {
+            return $nodeVersion.TrimStart("v")
+        } else {
+            return $null
+        }
+    } catch {
+        return $null
+    }
 }
 
-# Clean up
-Remove-Item $nodeInstallerPath -Force 
+# Check if Node.js is installed
+$installedVersion = Get-NodeVersion
+
+if ($installedVersion -eq $nodeVersionRequired) {
+    Write-Host "Node.js version $installedVersion is already installed."
+} else {
+    Write-Host "Node.js version $nodeVersionRequired is not installed. Downloading..."
+
+    # Download Node.js installer
+    Invoke-WebRequest -Uri $nodeInstallerUrl -OutFile $installerPath
+
+    if (Test-Path $installerPath) {
+        Write-Host "Download complete. Installing Node.js..."
+        
+        # Install Node.js silently
+        Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$installerPath`" /quiet /norestart" -Wait -NoNewWindow
+
+        # Verify installation
+        $newVersion = Get-NodeVersion
+        if ($newVersion -eq $nodeVersionRequired) {
+            Write-Host "Node.js version $nodeVersionRequired installed successfully."
+        } else {
+            Write-Host "Installation failed or version mismatch."
+        }
+
+        # Cleanup installer
+        Remove-Item -Path $installerPath -Force
+    } else {
+        Write-Host "Failed to download Node.js installer."
+    }
+}
