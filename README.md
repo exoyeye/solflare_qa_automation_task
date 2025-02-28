@@ -7,7 +7,7 @@
 For Windows:
 ```bash
 # Run the setup script
-setup.bat
+.\setup.bat
 ```
 
 For macOS/Linux:
