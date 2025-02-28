@@ -10,6 +10,7 @@ Here are the setup instructions for WIndows, macOS and Linux:
 
 To install NodeJS version 20.18.3 on Windows, run following command:
 ```bash
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 .\install-node.ps1
 ```
 After node version is successfully installed, run following command to install packages:
