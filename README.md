@@ -2,20 +2,22 @@
 
 ## INSTALLATION
 
-### Setup (with or without Node.js):
+### PREREQUISITS
+Node.js version 20.18.3 - if it's not installed, it will be installed via setup script
 
-For Windows:
+### Setup (with or without Node.js):
+Here are the setup instructions for WIndows, macOS and Linux:
+
+Windows:
 ```bash
-# Run the setup script
-.\setup.bat
+npm run setup:windows
 ```
 
-For macOS/Linux:
+
+
+macOS/Linux:
 ```bash
-# Make the script executable (first time only)
-chmod +x setup.sh
-# Run the setup script
-./setup.sh
+npm run setup:unix
 ```
 
 These scripts will:
