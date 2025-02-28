@@ -1,6 +1,4 @@
 $nodeVersionRequired = "20.18.3"
-$nodeInstallerUrl = "https://nodejs.org/dist/v$nodeVersionRequired/node-v$nodeVersionRequired-x64.msi"
-$installerPath = "$env:TEMP\node-v$nodeVersionRequired-x64.msi"
 
 # Function to get installed Node.js version
 function Get-NodeVersion {
@@ -22,28 +20,47 @@ $installedVersion = Get-NodeVersion
 if ($installedVersion -eq $nodeVersionRequired) {
     Write-Host "Node.js version $installedVersion is already installed."
 } else {
-    Write-Host "Node.js version $nodeVersionRequired is not installed. Downloading..."
+    Write-Host "Node.js version $nodeVersionRequired is not installed. Installing via FNM..."
 
-    # Download Node.js installer
-    Invoke-WebRequest -Uri $nodeInstallerUrl -OutFile $installerPath
+    # Set execution policy for the current user
+    Set-ExecutionPolicy -Scope CurrentUser RemoteSigned -Force
 
-    if (Test-Path $installerPath) {
-        Write-Host "Download complete. Installing Node.js..."
-        
-        # Install Node.js silently
-        Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$installerPath`" /quiet /norestart" -Wait -NoNewWindow
+    # Install FNM using winget if not installed
+    if (-not (Get-Command fnm -ErrorAction SilentlyContinue)) {
+        Write-Host "Installing FNM (Fast Node Manager)..."
+        winget install Schniz.fnm --silent
+        $env:Path += ";$($HOME)\.fnm"
+    }
 
-        # Verify installation
-        $newVersion = Get-NodeVersion
-        if ($newVersion -eq $nodeVersionRequired) {
-            Write-Host "Node.js version $nodeVersionRequired installed successfully."
-        } else {
-            Write-Host "Installation failed or version mismatch."
-        }
+    # Install Node.js version 20.18.3 using FNM
+    Write-Host "Installing Node.js $nodeVersionRequired using FNM..."
+    fnm install $nodeVersionRequired
+    fnm use $nodeVersionRequired
 
-        # Cleanup installer
-        Remove-Item -Path $installerPath -Force
+    # Ensure FNM is configured in the PowerShell profile
+    if (Test-Path $PROFILE) {
+        Write-Host "PowerShell profile found. Adding FNM environment setup..."
     } else {
-        Write-Host "Failed to download Node.js installer."
+        Write-Host "PowerShell profile not found. Creating a new one..."
+        New-Item -Type File -Path $PROFILE -Force
+    }
+
+    # Add FNM environment setup to profile (if not already present)
+    $fnmCommand = "fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression"
+    if (-not (Select-String -Path $PROFILE -Pattern $fnmCommand -Quiet)) {
+        Add-Content -Path $PROFILE -Value "`n$fnmCommand"
+    }
+
+    # Reload profile
+    . $PROFILE
+
+    # Verify installation
+    $newVersion = Get-NodeVersion
+    if ($newVersion -eq $nodeVersionRequired) {
+        Write-Host "Node.js version $nodeVersionRequired installed successfully via FNM."
+    } else {
+        Write-Host "Installation failed or version mismatch."
     }
 }
+
+Write-Host "Please restart PowerShell and run 'node -v' to verify the installation."
