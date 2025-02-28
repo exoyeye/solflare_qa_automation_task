@@ -8,27 +8,41 @@ Node.js version 20.18.3 - if it's not installed, it will be installed via setup 
 ### Setup (with or without Node.js):
 Here are the setup instructions for WIndows, macOS and Linux:
 
-Windows:
+To install NodeJS version 20.18.3 on Windows, run following command:
 ```bash
 .\install-node.ps1
+```
+After node version is successfully installed, run following command to install packages:
+```
 npm install
 ```
 
+That's it, you are ready to run tests!
 
 
-For macOS/Linux:
+
+To install NodeJS version 20.18.3 on macOS/Linux, run following command
 ```bash
 chmod +x install-node.sh
 ./install-node.sh
-npm install
-
-npm run setup:unix
 ```
 
-These scripts will:
-1. Check if Node.js is installed and install it if needed
-2. Install all project dependencies
-3. Configure WebdriverIO
+Please make sure version 20.18.3 is used with the command:
+```
+node -v
+```
+
+If, for some reason, version is not automatically set to 20.18.3, use the following command to change node version:
+```
+nvm use 20.18.3
+```
+
+After node version is successfully installed, run following command to install packages:
+```
+npm install
+```
+
+That's it, you are ready to run tests!
 
 ## RUN API TESTS
 

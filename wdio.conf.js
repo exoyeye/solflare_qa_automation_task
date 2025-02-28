@@ -21,7 +21,7 @@ exports.config = {
             browserName,
             ...(browserName === 'chrome' && {
                 'goog:chromeOptions': {
-                    args: isHeadless ? ['--headless', '--disable-gpu'] : []
+                    args: isHeadless ? ['--headless', '--disable-gpu', '--no-sandbox'] : []
                 }
             }),
             ...(browserName === 'firefox' && {
