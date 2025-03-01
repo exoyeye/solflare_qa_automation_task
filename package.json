@@ -12,7 +12,10 @@
     "author": "Mario Bajac",
     "license": "ISC",
     "dependencies": {
-        "@puppeteer/browsers": "^2.7.1"
+        "@puppeteer/browsers": "^2.7.1",
+        "puppeteer": "^24.3.0",
+        "puppeteer-extra": "^3.3.6",
+        "puppeteer-extra-plugin-stealth": "^2.11.2"
     },
     "devDependencies": {
         "@wdio/cli": "^9.10.0",
