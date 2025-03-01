@@ -10,8 +10,11 @@ Here are the setup instructions for WIndows, macOS and Linux:
 
 To install NodeJS version 20.18.3 on Windows, run following command:
 ```bash
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 .\install-node.ps1
 ```
+If you receive some error like "fnm" command is not recognized, just restart your terminal!
+
 After node version is successfully installed, run following command to install packages:
 ```
 npm install
